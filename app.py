@@ -85,7 +85,8 @@ def complaint():
     department = None
 
     if request.method == "POST":
-        complaint_text = request.form["complaint"]
+        complaint_text = request.form.get("complaint", "").strip()
+        print("COMPLAINT RECEIVED:", complaint_text)
         department = predict_department(complaint_text)
 
         conn = sqlite3.connect("grievance.db")
@@ -122,6 +123,7 @@ def status():
 # -------------------------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
 
 
 
