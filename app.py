@@ -15,13 +15,10 @@ vectorizer = pickle.load(open("vectorizer.pkl", "rb"))
 # Database Initialization
 # -------------------------
 def init_db():
-    if os.path.exists("grievance.db"):
-        os.remove("grievance.db")  # force fresh DB on start
-
     conn = sqlite3.connect("grievance.db")
     cursor = conn.cursor()
     cursor.execute("""
-        CREATE TABLE complaints (
+        CREATE TABLE IF NOT EXISTS complaints (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             complaint_text TEXT,
             department TEXT,
@@ -123,6 +120,7 @@ def status():
 # -------------------------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
 
 
 
