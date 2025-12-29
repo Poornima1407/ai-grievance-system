@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Government Admin Dashboard</h2>
+
+    <h3>Total Complaints Received</h3>
+
+    <table border="1" width="100%" cellpadding="8">
+        <tr>
+            <th>ID</th>
+            <th>Complaint</th>
+            <th>Department</th>
+            <th>Status</th>
+        </tr>
+
+        {% for c in complaints %}
+        <tr>
+            <td>{{ c[0] }}</td>
+            <td>{{ c[1] }}</td>
+            <td>{{ c[2] }}</td>
+            <td>{{ c[3] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+
+    <h3>Department-wise Complaint Count</h3>
+
+    <table border="1" width="100%" cellpadding="8">
+        <tr>
+            <th>Department</th>
+            <th>Total</th>
+        </tr>
+
+        {% for d in dept_count %}
+        <tr>
+            <td>{{ d[0] }}</td>
+            <td>{{ d[1] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+</body>
+</html>

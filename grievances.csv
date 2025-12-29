@@ -1,0 +1,7 @@
+Complaint_Text,Department,Category,Status,City,Area,Priority
+Pothole on main road,Roads,Infrastructure,Submitted,Chennai,T Nagar,High
+Garbage not collected,Sanitation,Waste,In Progress,Chennai,Velachery,Medium
+Street light not working,Electricity,Power,Submitted,Coimbatore,Gandhipuram,Low
+Water leakage issue,Water,Supply,Resolved,Madurai,Anna Nagar,High
+Drainage overflow,Sanitation,Waste,Submitted,Salem,Fairlands,High
+Traffic signal not working,Traffic,Transport,In Progress,Erode,Bus Stand,Medium

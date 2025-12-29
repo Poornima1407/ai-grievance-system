@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Citizen Grievance Portal</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Submit Your Complaint</h2>
+
+    <form method="POST">
+        <textarea name="complaint" rows="5" placeholder="Enter your complaint here..." required></textarea>
+        <button type="submit">Submit Complaint</button>
+    </form>
+
+    {% if department %}
+        <div class="result">
+            Assigned Department: {{ department }}
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
