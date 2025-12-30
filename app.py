@@ -1,19 +1,19 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 import pickle
 import os
 
 app = Flask(__name__)
 
-# -------------------------
-# Load ML Model & Vectorizer
-# -------------------------
+# ===============================
+# Load ML model & vectorizer
+# ===============================
 model = pickle.load(open("grievance_model.pkl", "rb"))
 vectorizer = pickle.load(open("vectorizer.pkl", "rb"))
 
-# -------------------------
-# Database Initialization
-# -------------------------
+# ===============================
+# Initialize Database
+# ===============================
 def init_db():
     conn = sqlite3.connect("grievance.db")
     cursor = conn.cursor()
@@ -22,94 +22,106 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             complaint_text TEXT,
             department TEXT,
+            area TEXT,
+            city TEXT,
+            pincode TEXT,
             status TEXT
         )
     """)
     conn.commit()
     conn.close()
 
-
 init_db()
 
-# -------------------------
-# Hybrid Prediction Function
-# -------------------------
+# ===============================
+# Department Prediction (FINAL)
+# ===============================
 def predict_department(text):
     text = text.lower()
 
     # Health Department
-    if any(word in text for word in ["ambulance", "hospital", "doctor", "medical", "health"]):
+    if any(word in text for word in [
+        "ambulance", "hospital", "doctor", "medical", "health", "emergency"
+    ]):
         return "Health Department"
 
-    # Public Safety Department
-    if any(word in text for word in ["dog", "dogs", "noise", "theft", "robbery", "fight", "unsafe"]):
+    # Public Safety
+    if any(word in text for word in [
+        "dog", "dogs", "street dog", "noise", "theft", "robbery",
+        "fight", "unsafe", "crime"
+    ]):
         return "Public Safety Department"
 
-    # Transport Department
-    if any(word in text for word in ["bus", "transport", "traffic", "signal", "parking"]):
+    # Transport
+    if any(word in text for word in [
+        "bus", "transport", "traffic", "signal", "parking", "road accident"
+    ]):
         return "Transport Department"
 
-    # Sanitation & Waste Management
-    if any(word in text for word in ["garbage", "waste", "drainage", "sewer"]):
+    # Sanitation & Waste
+    if any(word in text for word in [
+        "garbage", "waste", "drainage", "sewer", "overflow", "cleaning"
+    ]):
         return "Sanitation & Waste Management"
 
-    # Electricity Department
-    if any(word in text for word in ["street light", "power", "electricity", "wire"]):
+    # Electricity
+    if any(word in text for word in [
+        "street light", "power", "electricity", "wire", "current"
+    ]):
         return "Electricity Department"
 
-    # Water Supply Department
-    if any(word in text for word in ["water", "pipeline", "leakage"]):
+    # Water
+    if any(word in text for word in [
+        "water", "pipeline", "leakage", "water supply"
+    ]):
         return "Water Supply Department"
 
     # ML fallback
     vec = vectorizer.transform([text])
     return model.predict(vec)[0]
 
-# -------------------------
-# Routes
-# -------------------------
-
-@app.route("/")
-def login():
-    return render_template("login.html")
-
-@app.route("/register")
-def register():
-    return render_template("register.html")
-
+# ===============================
+# Complaint Page
+# ===============================
+@app.route("/", methods=["GET", "POST"])
 @app.route("/complaint", methods=["GET", "POST"])
 def complaint():
     department = None
 
     if request.method == "POST":
         complaint_text = request.form.get("complaint", "").strip()
-        print("COMPLAINT RECEIVED:", complaint_text)
+        area = request.form.get("area")
+        city = request.form.get("city")
+        pincode = request.form.get("pincode")
+
         department = predict_department(complaint_text)
 
         conn = sqlite3.connect("grievance.db")
         cursor = conn.cursor()
-        cursor.execute(
-            "INSERT INTO complaints (complaint_text, department, status) VALUES (?, ?, ?)",
-            (complaint_text, department, "Submitted")
-        )
+        cursor.execute("""
+            INSERT INTO complaints
+            (complaint_text, department, area, city, pincode, status)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (complaint_text, department, area, city, pincode, "Submitted"))
         conn.commit()
         conn.close()
 
     return render_template("complaint.html", department=department)
 
+# ===============================
+# Admin Dashboard
+# ===============================
 @app.route("/admin")
 def admin():
     conn = sqlite3.connect("grievance.db")
     cursor = conn.cursor()
 
-    # Fetch all complaints
     cursor.execute("SELECT * FROM complaints")
     complaints = cursor.fetchall()
 
-    # Fetch department-wise count
     cursor.execute("""
-        SELECT department, COUNT(*) 
-        FROM complaints 
+        SELECT department, COUNT(*)
+        FROM complaints
         GROUP BY department
     """)
     dept_counts = cursor.fetchall()
@@ -122,22 +134,11 @@ def admin():
         dept_counts=dept_counts
     )
 
-
-@app.route("/status")
-def status():
-    conn = sqlite3.connect("grievance.db")
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM complaints")
-    complaints = cursor.fetchall()
-    conn.close()
-    return render_template("status.html", complaints=complaints)
-
-# -------------------------
-# Run App
-# -------------------------
+# ===============================
+# Run App (Render Compatible)
+# ===============================
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
-
 
 
 
