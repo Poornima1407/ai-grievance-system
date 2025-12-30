@@ -101,10 +101,27 @@ def complaint():
 def admin():
     conn = sqlite3.connect("grievance.db")
     cursor = conn.cursor()
+
+    # Fetch all complaints
     cursor.execute("SELECT * FROM complaints")
     complaints = cursor.fetchall()
+
+    # Fetch department-wise count
+    cursor.execute("""
+        SELECT department, COUNT(*) 
+        FROM complaints 
+        GROUP BY department
+    """)
+    dept_counts = cursor.fetchall()
+
     conn.close()
-    return render_template("admin.html", complaints=complaints)
+
+    return render_template(
+        "admin.html",
+        complaints=complaints,
+        dept_counts=dept_counts
+    )
+
 
 @app.route("/status")
 def status():
@@ -120,6 +137,7 @@ def status():
 # -------------------------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
 
 
 
