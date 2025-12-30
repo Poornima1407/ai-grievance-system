@@ -33,21 +33,28 @@
 
     <h3>Department-wise Complaint Count</h3>
 
-    <table border="1" width="100%" cellpadding="8">
-        <tr>
-            <th>Department</th>
-            <th>Total</th>
-        </tr>
+{% if dept_counts %}
+<table>
+    <tr>
+        <th>Department</th>
+        <th>Total</th>
+    </tr>
 
-        {% for d in dept_count %}
-        <tr>
-            <td>{{ d[0] }}</td>
-            <td>{{ d[1] }}</td>
-        </tr>
-        {% endfor %}
+    {% for row in dept_counts %}
+    <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No data available</p>
+{% endif %}
+
     </table>
 
 </div>
 
 </body>
 </html>
+
