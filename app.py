@@ -34,43 +34,37 @@ def init_db():
 init_db()
 
 # ===============================
-# Department Prediction (FINAL)
+# Department Prediction
 # ===============================
 def predict_department(text):
     text = text.lower()
 
-    # Health Department
     if any(word in text for word in [
         "ambulance", "hospital", "doctor", "medical", "health", "emergency"
     ]):
         return "Health Department"
 
-    # Public Safety
     if any(word in text for word in [
         "dog", "dogs", "street dog", "noise", "theft", "robbery",
-        "fight", "unsafe", "crime"
+        "fight", "unsafe", "crime", "pothole", "patholes"
     ]):
         return "Public Safety Department"
 
-    # Transport
     if any(word in text for word in [
         "bus", "transport", "traffic", "signal", "parking", "road accident"
     ]):
         return "Transport Department"
 
-    # Sanitation & Waste
     if any(word in text for word in [
-        "garbage", "waste", "drainage", "sewer", "overflow", "cleaning"
+        "garbage", "waste", "drainage", "sewer", "overflow", "cleaning","Mosquito","stagnant water"
     ]):
         return "Sanitation & Waste Management"
 
-    # Electricity
     if any(word in text for word in [
-        "street light", "power", "electricity", "wire", "current"
+        "street light", "power", "electricity", "wire", "current",
     ]):
         return "Electricity Department"
 
-    # Water
     if any(word in text for word in [
         "water", "pipeline", "leakage", "water supply"
     ]):
@@ -81,9 +75,24 @@ def predict_department(text):
     return model.predict(vec)[0]
 
 # ===============================
-# Complaint Page
+# HOME → LOGIN
 # ===============================
-@app.route("/", methods=["GET", "POST"])
+@app.route("/")
+def home():
+    return redirect(url_for("login"))
+
+# ===============================
+# LOGIN PAGE
+# ===============================
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        return redirect(url_for("complaint"))
+    return render_template("login.html")
+
+# ===============================
+# COMPLAINT PAGE
+# ===============================
 @app.route("/complaint", methods=["GET", "POST"])
 def complaint():
     department = None
@@ -106,19 +115,22 @@ def complaint():
         conn.commit()
         conn.close()
 
-    return render_template("complaint.html", department=department)
+    return redirect(url_for("status"))
+
 
 # ===============================
-# Admin Dashboard
+# ADMIN DASHBOARD
 # ===============================
 @app.route("/admin")
 def admin():
     conn = sqlite3.connect("grievance.db")
     cursor = conn.cursor()
 
+    # All complaints
     cursor.execute("SELECT * FROM complaints")
     complaints = cursor.fetchall()
 
+    # Department-wise count
     cursor.execute("""
         SELECT department, COUNT(*)
         FROM complaints
@@ -126,21 +138,37 @@ def admin():
     """)
     dept_counts = cursor.fetchall()
 
+    # Total complaints
+    cursor.execute("SELECT COUNT(*) FROM complaints")
+    total_complaints = cursor.fetchone()[0]
+
     conn.close()
 
     return render_template(
         "admin.html",
         complaints=complaints,
-        dept_counts=dept_counts
+        dept_counts=dept_counts,
+        total_complaints=total_complaints
     )
 
+@app.route("/status")
+def status():
+    conn = sqlite3.connect("grievance.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT complaint_text, department, area, city, pincode, status
+        FROM complaints
+        ORDER BY id DESC
+    """)
+    complaints = cursor.fetchall()
+    conn.close()
+
+    return render_template("status.html", complaints=complaints)
+
+
 # ===============================
-# Run App (Render Compatible)
+# RUN APP
 # ===============================
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
-
-
-
-
-
