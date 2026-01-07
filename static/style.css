@@ -1,57 +1,77 @@
+* {
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
 body {
     margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-    color: white;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f4c5c, #1b9aaa);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.container {
-    max-width: 600px;
-    margin: 80px auto;
-    background: white;
-    color: black;
+.page-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.card {
+    background: #ffffff;
+    width: 420px;
     padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    border-radius: 14px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
 }
 
-h2 {
+.card h2 {
     text-align: center;
-    color: #2c5364;
+    margin-bottom: 25px;
+    color: #0f4c5c;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 15px;
 }
 
 textarea {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
     resize: none;
-    font-size: 16px;
 }
 
 button {
     width: 100%;
-    margin-top: 15px;
     padding: 12px;
+    background: #1f9d55;
+    color: white;
     font-size: 16px;
     border: none;
     border-radius: 8px;
-    background-color: #2c5364;
-    color: white;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #1b3c50;
+    background: #15803d;
 }
 
-.result {
+/* RESULT STYLE */
+.result-box {
     margin-top: 20px;
     padding: 15px;
+    border-left: 6px solid #0d6efd;
+    background: #e7f3ff;
     border-radius: 8px;
-    background-color: #e6f4ea;
-    color: #155724;
+    color: #084298;
+}
+
+.result-box span {
+    display: block;
+    margin-top: 5px;
     font-weight: bold;
-    text-align: center;
 }
