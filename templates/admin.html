@@ -2,20 +2,65 @@
 <html>
 <head>
     <title>Admin Dashboard</title>
+
+    <!-- Main CSS -->
     <link rel="stylesheet" href="/static/style.css">
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
-<div class="container">
-    <h2>Government Admin Dashboard</h2>
+<div class="dashboard">
 
-    <h3>Total Complaints Received</h3>
+    <h1>Government Admin Dashboard</h1>
 
-    <table border="1" width="100%" cellpadding="8">
+    <!-- =======================
+         SUMMARY CARDS
+    ======================== -->
+    <div class="cards">
+
+        <div class="card total">
+            <h2>{{ total_complaints }}</h2>
+            <p>Total Complaints</p>
+        </div>
+
+        {% for dept, count in dept_counts %}
+        <div class="card dept">
+            <h2>{{ count }}</h2>
+            <p>{{ dept }}</p>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <!-- =======================
+         CHART SECTION
+    ======================== -->
+    <h2 style="text-align:center; margin-top:40px;">Complaint Analytics</h2>
+
+    <div style="width:80%; margin:40px auto;">
+        <canvas id="barChart"></canvas>
+    </div>
+
+    <div style="width:60%; margin:40px auto;">
+        <canvas id="pieChart"></canvas>
+    </div>
+
+    <!-- =======================
+         COMPLAINT TABLE
+    ======================== -->
+    <h2>All Complaints</h2>
+
+    <table>
         <tr>
             <th>ID</th>
             <th>Complaint</th>
             <th>Department</th>
+            <th>Area</th>
+            <th>City</th>
+            <th>Pincode</th>
             <th>Status</th>
         </tr>
 
@@ -25,31 +70,107 @@
             <td>{{ c[1] }}</td>
             <td>{{ c[2] }}</td>
             <td>{{ c[3] }}</td>
+            <td>{{ c[4] }}</td>
+            <td>{{ c[5] }}</td>
+            <td>{{ c[6] }}</td>
         </tr>
         {% endfor %}
     </table>
 
-    <br>
+</div>
 
-    <h3>Department-wise Complaint Count</h3>
+<!-- =======================
+     CHART SCRIPT
+======================== -->
+<script>
+    const departments = [
+        {% for dept, count in dept_counts %}
+            "{{ dept }}",
+        {% endfor %}
+    ];
 
-{% if dept_counts %}
-<table>
-    <tr>
-        <th>Department</th>
-        <th>Total</th>
-    </tr>
+    const counts = [
+        {% for dept, count in dept_counts %}
+            {{ count }},
+        {% endfor %}
+    ];
 
-    {% for row in dept_counts %}
-    <tr>
-        <td>{{ row[0] }}</td>
-        <td>{{ row[1] }}</td>
-    </tr>
-    {% endfor %}
-</table>
-{% else %}
-<p>No data available</p>
-{% endif %}
+    // BAR CHART
+    new Chart(document.getElementById("barChart"), {
+        type: "bar",
+        data: {
+            labels: departments,
+            datasets: [{
+                label: "Number of Complaints",
+                data: counts,
+                backgroundColor: [
+                    "#1d976c",
+                    "#2193b0",
+                    "#f39c12",
+                    "#e74c3c",
+                    "#9b59b6",
+                    "#34495e"
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+
+    // PIE CHART
+    new Chart(document.getElementById("pieChart"), {
+        type: "pie",
+        data: {
+            labels: departments,
+            datasets: [{
+                data: counts,
+                backgroundColor: [
+                    "#1d976c",
+                    "#2193b0",
+                    "#f39c12",
+                    "#e74c3c",
+                    "#9b59b6",
+                    "#34495e"
+                ]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+</script>
+
+</body>
+</html>
+
+
+    <!-- COMPLAINT TABLE -->
+    <h2>All Complaints</h2>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Complaint</th>
+            <th>Department</th>
+            <th>Area</th>
+            <th>City</th>
+            <th>Status</th>
+        </tr>
+
+        {% for c in complaints %}
+        <tr>
+            <td>{{ c[0] }}</td>
+            <td>{{ c[1] }}</td>
+            <td>{{ c[2] }}</td>
+            <td>{{ c[3] }}</td>
+            <td>{{ c[4] }}</td>
+            <td>{{ c[6] }}</td>
+        </tr>
+        {% endfor %}
 
     </table>
 
@@ -57,4 +178,3 @@
 
 </body>
 </html>
-
