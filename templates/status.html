@@ -1,1 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Complaint Status</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Submitted Complaints</h2>
+
+    <table>
+        <tr>
+            <th>Complaint</th>
+            <th>Department</th>
+            <th>Area</th>
+            <th>City</th>
+            <th>Pincode</th>
+            <th>Status</th>
+        </tr>
+
+        {% for c in complaints %}
+        <tr>
+            <td>{{ c[0] }}</td>
+            <td>{{ c[1] }}</td>
+            <td>{{ c[2] }}</td>
+            <td>{{ c[3] }}</td>
+            <td>{{ c[4] }}</td>
+            <td>{{ c[5] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+</body>
+</html>
+
 
