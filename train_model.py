@@ -1,25 +1,53 @@
 import pandas as pd
+import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
-import pickle
 
-# Load your dataset
-data = pd.read_csv("data/grievances.csv")
+# ===============================
+# Load dataset
+# ===============================
+df = pd.read_csv("data/grievances.csv")
 
-# Input and output columns (based on YOUR dataset)
-X = data["Complaint_Text"]     # complaint text
-y = data["Department"]         # department to predict
+# ===============================
+# Clean data (IMPORTANT)
+# ===============================
+# Keep only required columns
+df = df[["Complaint_Text", "Department"]]
 
-# Convert text to numeric form
-vectorizer = TfidfVectorizer(stop_words="english")
+# Drop rows with missing values
+df.dropna(inplace=True)
+
+# Convert to string (safety)
+df["Complaint_Text"] = df["Complaint_Text"].astype(str)
+df["Department"] = df["Department"].astype(str)
+
+# ===============================
+# Features & Labels
+# ===============================
+X = df["Complaint_Text"]
+y = df["Department"]
+
+# ===============================
+# Vectorization
+# ===============================
+vectorizer = TfidfVectorizer(
+    stop_words="english",
+    max_features=3000
+)
+
 X_vec = vectorizer.fit_transform(X)
 
-# Train the model
+# ===============================
+# Train model
+# ===============================
 model = MultinomialNB()
 model.fit(X_vec, y)
 
-# Save trained model
+# ===============================
+# Save model
+# ===============================
 pickle.dump(model, open("grievance_model.pkl", "wb"))
 pickle.dump(vectorizer, open("vectorizer.pkl", "wb"))
 
-print("✅ Model trained using YOUR dataset successfully")
+print("✅ Model trained successfully after cleaning NaN values")
+
