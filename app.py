@@ -105,7 +105,9 @@ def complaint():
 
         department = predict_department(complaint_text)
 
-        conn = sqlite3.connect("grievance.db")
+        DB_PATH = os.path.join(os.getcwd(), "grievance.db")
+conn = sqlite3.connect(DB_PATH)
+
         cursor = conn.cursor()
         cursor.execute("""
             INSERT INTO complaints
@@ -172,4 +174,5 @@ def status():
 # ===============================
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
 
