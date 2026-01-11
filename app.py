@@ -98,7 +98,7 @@ def complaint():
     department = None
 
     if request.method == "POST":
-        complaint_text = request.form.get("complaint", "").strip()
+        complaint_text = request.form.get("complaint")
         area = request.form.get("area")
         city = request.form.get("city")
         pincode = request.form.get("pincode")
@@ -115,7 +115,7 @@ def complaint():
         conn.commit()
         conn.close()
 
-    return redirect(url_for("status"))
+    return render_template("complaint.html", department=department)
 
 
 # ===============================
@@ -172,3 +172,4 @@ def status():
 # ===============================
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
