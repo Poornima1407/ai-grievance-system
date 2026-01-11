@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Submit Complaint</title>
+    <title>Citizen Grievance Submission</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -11,26 +11,31 @@
 
     <form method="POST">
 
-        <input type="text" name="area" placeholder="Enter your area / locality" required>
+        <input type="text" name="area" placeholder="Enter Area / Locality" required>
 
-        <input type="text" name="city" placeholder="Enter your city" required>
+        <input type="text" name="city" placeholder="Enter City" required>
 
-        <input type="text" name="pincode" placeholder="Enter pincode" required>
+        <input type="text" name="pincode" placeholder="Enter Pincode" required>
 
-        <textarea name="complaint" rows="5" placeholder="Describe your complaint clearly" required></textarea>
+        <textarea name="complaint"
+                  rows="5"
+                  placeholder="Describe your grievance clearly"
+                  required></textarea>
 
         <button type="submit">Submit Complaint</button>
     </form>
 
     {% if department %}
-        <div class="result">
-            Assigned Department: {{ department }}
-        </div>
+    <div class="assigned-dept">
+        <strong>Assigned Department:</strong><br>
+        {{ department }}
+    </div>
     {% endif %}
 
 </div>
 
 </body>
 </html>
+
 
 
