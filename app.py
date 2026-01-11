@@ -100,6 +100,7 @@ def complaint():
     department = None
 
     if request.method == "POST":
+    try:
         complaint_text = request.form.get("complaint")
         area = request.form.get("area")
         city = request.form.get("city")
@@ -107,19 +108,22 @@ def complaint():
 
         department = predict_department(complaint_text)
 
-        DB_PATH = os.path.join(os.getcwd(), "grievance.db")
-conn = sqlite3.connect(DB_PATH)
-
+        db_path = os.path.join(os.getcwd(), "grievance.db")
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
+
         cursor.execute("""
             INSERT INTO complaints
             (complaint_text, department, area, city, pincode, status)
             VALUES (?, ?, ?, ?, ?, ?)
         """, (complaint_text, department, area, city, pincode, "Submitted"))
+
         conn.commit()
         conn.close()
 
-    return render_template("complaint.html", department=department)
+    except Exception as e:
+        print("ERROR:", e)
+        department = "Error saving complaint"
 
 
 # ===============================
@@ -176,6 +180,7 @@ def status():
 # ===============================
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
 
 
 
