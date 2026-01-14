@@ -75,3 +75,65 @@ button:hover {
     margin-top: 5px;
     font-weight: bold;
 }
+
+/* ============================
+   LOGIN & REGISTER PAGES
+============================ */
+
+.auth-container {
+    width: 380px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 14px;
+    margin: 100px auto;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    text-align: center;
+}
+
+.auth-container h2 {
+    margin-bottom: 8px;
+    color: #0f4c5c;
+}
+
+.auth-container .subtitle {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 25px;
+}
+
+.auth-container input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.auth-container button {
+    width: 100%;
+    padding: 12px;
+    background: #1abc9c;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.auth-container button:hover {
+    background: #16a085;
+}
+
+.auth-container .switch {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.auth-container .switch a {
+    color: #1abc9c;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
