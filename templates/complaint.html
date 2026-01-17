@@ -1,41 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Citizen Grievance Submission</title>
+    <meta charset="UTF-8">
+    <title>Submit Complaint</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
-<div class="container">
-    <h2>Submit Your Complaint</h2>
+<div class="page-wrapper">
+    <div class="card">
+        <h2>Submit Your Complaint</h2>
 
-    <form method="POST">
+        <form method="POST">
 
-        <input type="text" name="area" placeholder="Enter Area / Locality" required>
+            <input type="text" name="area" placeholder="Enter your area / locality" required>
 
-        <input type="text" name="city" placeholder="Enter City" required>
+            <input type="text" name="city" placeholder="Enter your city" required>
 
-        <input type="text" name="pincode" placeholder="Enter Pincode" required>
+            <input type="text" name="pincode" placeholder="Enter pincode" required>
 
-        <textarea name="complaint"
-                  rows="5"
-                  placeholder="Describe your grievance clearly"
-                  required></textarea>
+            <textarea name="complaint" rows="5"
+                placeholder="Describe your complaint clearly..." required></textarea>
 
-        <button type="submit">Submit Complaint</button>
-    </form>
+            <button type="submit">Submit Complaint</button>
+        </form>
 
-    {% if department %}
-    <div class="assigned-dept">
-        <strong>Assigned Department:</strong><br>
-        {{ department }}
+        {% if department %}
+        <div class="result-box">
+            <span>Assigned Department:</span><br>
+            {{ department }}
+        </div>
+        {% endif %}
+
     </div>
-    {% endif %}
-
 </div>
 
 </body>
 </html>
-
-
-
