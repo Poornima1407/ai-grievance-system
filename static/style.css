@@ -5,135 +5,75 @@
 
 body {
     margin: 0;
-    min-height: 100vh;
+    height: 100vh;
     background: linear-gradient(135deg, #0f4c5c, #1b9aaa);
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 }
 
+/* Page wrapper */
 .page-wrapper {
     width: 100%;
     display: flex;
     justify-content: center;
 }
 
+/* Card */
 .card {
     background: #ffffff;
     width: 420px;
-    padding: 30px;
-    border-radius: 14px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    padding: 35px;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
 }
 
+/* Heading */
 .card h2 {
     text-align: center;
-    margin-bottom: 25px;
     color: #0f4c5c;
+    margin-bottom: 25px;
 }
 
+/* Inputs */
 input, textarea {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     margin-bottom: 15px;
     border-radius: 8px;
     border: 1px solid #ccc;
     font-size: 15px;
 }
 
+/* Textarea */
 textarea {
     resize: none;
 }
 
+/* Button */
 button {
     width: 100%;
-    padding: 12px;
-    background: #1f9d55;
+    padding: 14px;
+    background: #1b9aaa;
     color: white;
-    font-size: 16px;
     border: none;
     border-radius: 8px;
+    font-size: 16px;
     cursor: pointer;
+    transition: background 0.3s;
 }
 
 button:hover {
-    background: #15803d;
+    background: #14818f;
 }
 
-/* RESULT STYLE */
+/* Result box */
 .result-box {
     margin-top: 20px;
     padding: 15px;
-    border-left: 6px solid #0d6efd;
-    background: #e7f3ff;
+    background: #e6f7fb;
+    border-left: 6px solid #1b9aaa;
     border-radius: 8px;
-    color: #084298;
-}
-
-.result-box span {
-    display: block;
-    margin-top: 5px;
     font-weight: bold;
-}
-
-/* ============================
-   LOGIN & REGISTER PAGES
-============================ */
-
-.auth-container {
-    width: 380px;
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 14px;
-    margin: 100px auto;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-    text-align: center;
-}
-
-.auth-container h2 {
-    margin-bottom: 8px;
     color: #0f4c5c;
 }
-
-.auth-container .subtitle {
-    font-size: 14px;
-    color: #777;
-    margin-bottom: 25px;
-}
-
-.auth-container input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-}
-
-.auth-container button {
-    width: 100%;
-    padding: 12px;
-    background: #1abc9c;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.auth-container button:hover {
-    background: #16a085;
-}
-
-.auth-container .switch {
-    margin-top: 15px;
-    font-size: 14px;
-}
-
-.auth-container .switch a {
-    color: #1abc9c;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-
